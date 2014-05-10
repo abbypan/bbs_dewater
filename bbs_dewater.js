@@ -138,9 +138,12 @@ $(xp).before($main_floors);
             var f = get_page_floors(u);
             var flen = f.length;
             for (var j = 0; j < flen; j++) {
+                if(! f[j].id) f[j].id = j + 1;
+
                 var id = f[j].id;
                 if (is_push_floor(main_floors, id)==false) continue;
                 if (is_floor_overflow(id, option)) return main_floors;
+
                 main_floors.push(f[j]);
             }
         }
