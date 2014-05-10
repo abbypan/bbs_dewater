@@ -133,18 +133,20 @@ $(xp).before($main_floors);
     function get_thread_floors(option) {
         var main_floors = new Array();
         var select_urls = select_page_urls(option);
+        var now_id = 1;
         for (var i in select_urls) {
             var u = select_urls[i];
             var f = get_page_floors(u);
             var flen = f.length;
             for (var j = 0; j < flen; j++) {
-                if(! f[j].id) f[j].id = j + 1;
+                if(! f[j].id) f[j].id = now_id;
 
                 var id = f[j].id;
                 if (is_push_floor(main_floors, id)==false) continue;
                 if (is_floor_overflow(id, option)) return main_floors;
 
                 main_floors.push(f[j]);
+                now_id++;
             }
         }
         return main_floors;
@@ -172,7 +174,7 @@ $(xp).before($main_floors);
 
     function add_floor_content(dst, f) {
         var html = '<div class="floor" id="floor' + f.id + '">' + 
-            '<div class="chapter">№' + f.id + '<span class="star">☆☆☆</span>' + f.poster + '<span class="star">于☆☆☆</span>' + f.time + '<span class="star">留言☆☆☆</span></div>' + 
+            '<div class="chapter">№' + f.id + '<span class="star">☆☆☆</span>' + f.poster + '<span class="star">☆☆☆</span>' + f.time + '<span class="star">☆☆☆</span></div>' + 
             '<div class="flcontent">' + f.content + '</div>' + 
             '</div>';
         $floor = $(html);
