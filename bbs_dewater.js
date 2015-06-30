@@ -66,6 +66,7 @@ function get_page_floors(u) {
             $resp.find(fp).each(function() {
                 var bot = $(this);
                 var f_i = extract_floor_info(bot);
+                f_i["word_num"] = calc_word_num(f_i["content"]);
                 floors_info.push(f_i);
             });
 
@@ -75,6 +76,11 @@ function get_page_floors(u) {
     return floors_info;
 }
 
+function calc_word_num(s) {
+    if(! s) return 0;
+    var ss = s.replace(/[\s\n]+/g,'').replace(/<[^>]+>/g,'');
+    return ss.length || 0;
+}
 
 function get_topic_url() {
     return window.location.href;
