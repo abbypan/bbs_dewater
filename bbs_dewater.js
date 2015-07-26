@@ -18,7 +18,10 @@ function add_dewater_banner() {
                      前<input id="max_page_num" name="max_page_num" size="5"/>页,\
                      前<input id="max_floor_num" name="max_floor_num" size="5"/>楼, \
                      每楼最少<input id="min_word_num" name="min_word_num" size="5"/>字,\
+                     抽取<input size="10" type="text" name="floor_keyword_grep" id="floor_keyword_grep">,  \
+                     过滤 <input size="10" type="text" name="floor_keyword_filter" id="floor_keyword_filter">,  \
                      <input type="checkbox" id="only_poster" name="only_poster">只看楼主,\
+                     <input type="checkbox" id="only_img" name="only_img">只看图,\
                      <input type="checkbox" id="with_toc" name="with_toc" checked />生成目录, \
                      <input type="submit" value="脱水" onclick="dewater_thread()" />\
                      </div>');
@@ -40,6 +43,9 @@ function get_dewater_option() {
         max_page_num: parseInt($("#max_page_num")[0].value),
         max_floor_num: parseInt($("#max_floor_num")[0].value),
         only_poster: $("#only_poster")[0].checked,
+        only_img: $("#only_img")[0].checked,
+        floor_keyword_grep : $("#floor_keyword_grep")[0].value + '', 
+        floor_keyword_filter : $("#floor_keyword_filter")[0].value + '', 
         with_toc: $("#with_toc")[0].checked,
         min_word_num: parseInt($("#min_word_num")[0].value)
     };
@@ -66,7 +72,7 @@ function get_page_floors(u) {
             $resp.find(fp).each(function() {
                 var bot = $(this);
                 var f_i = extract_floor_info(bot);
-                f_i["word_num"] = calc_word_num(f_i["content"]);
+                //alert(f_i.poster);
                 floors_info.push(f_i);
             });
 
@@ -76,11 +82,6 @@ function get_page_floors(u) {
     return floors_info;
 }
 
-function calc_word_num(s) {
-    if(! s) return 0;
-    var ss = s.replace(/[\s\n]+/g,'').replace(/<[^>]+>/g,'');
-    return ss.length || 0;
-}
 
 function get_topic_url() {
     return window.location.href;
@@ -143,7 +144,7 @@ function get_thread_floors(option) {
         var f = get_page_floors(u);
         var flen = f.length;
         for (var j = 0; j < flen; j++) {
-            if(! f[j].id) f[j].id = now_id;
+            if(f[j].id==undefined) f[j].id = now_id;
 
             var id = f[j].id;
             if (is_push_floor(main_floors, id)==false) continue;
@@ -166,7 +167,10 @@ function is_push_floor(floors_info, id){
 
 function is_skip_floor(f, opt) {
     if (opt.only_poster && (f.poster != opt.poster)) return 1;
+    if (opt.only_img && ! f.content.match(/\<img\s+/i)) return 1;
     if (opt.min_word_num && (f.word_num < opt.min_word_num)) return 1;
+    if (opt.floor_keyword_grep.match(/\S/) && ! f.content.match(opt.floor_keyword_grep)) return 1;
+    if (opt.floor_keyword_filter.match(/\S/) && f.content.match(opt.floor_keyword_filter)) return 1;
     return;
 }
 
