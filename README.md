@@ -3,6 +3,8 @@ bbs_dewater
 
 bbs dewater, base function 贴子脱水 ，基础函数如下：
 
+![bbs_dewater.png](bbs_dewater.png)
+
 前n页
 
 前n楼

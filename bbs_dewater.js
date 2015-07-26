@@ -52,8 +52,6 @@ function get_dewater_option() {
 
 }
 
-
-
 function get_page_floors(u) {
     $('#dewater_title').html("正在取 ：" + u);
     var floors_info = new Array();
