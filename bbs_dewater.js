@@ -11,6 +11,10 @@ var $ = jQuery || window.jQuery || $;
 
 add_dewater_banner();
 
+function calc_word_num(w){
+    return w.replace('<[^>]+>','').replace(/\s/g,'').length;
+}
+
 function add_dewater_banner() {
     var xp = banner_path();
     $dewater_div = $('\
@@ -65,13 +69,16 @@ function get_page_floors(u) {
             jqXHR.overrideMimeType('text/html; charset='+ page_charset());
         },
         success: function(data) {
+            if(window.tidy_body_html){
+                data = tidy_body_html(data);
+            }
             var $resp = $(data);
 
             $resp.find(fp).each(function() {
                 var bot = $(this);
                 var f_i = extract_floor_info(bot);
-                //alert(f_i.poster);
-                floors_info.push(f_i);
+                f_i.word_num = calc_word_num(f_i.content);
+                if(f_i) floors_info.push(f_i);
             });
 
         }
@@ -142,7 +149,7 @@ function get_thread_floors(option) {
         var f = get_page_floors(u);
         var flen = f.length;
         for (var j = 0; j < flen; j++) {
-            if(f[j].id==undefined) f[j].id = now_id;
+            if(f[j].id==undefined || f[j].id.match(/^\s*$/)) f[j].id = now_id;
 
             var id = f[j].id;
             if (is_push_floor(main_floors, id)==false) continue;
