@@ -149,7 +149,7 @@ function get_thread_floors(option) {
         var f = get_page_floors(u);
         var flen = f.length;
         for (var j = 0; j < flen; j++) {
-            if(f[j].id==undefined || f[j].id.match(/^\s*$/)) f[j].id = now_id;
+            if( f[j].id===undefined ) f[j].id = now_id;
 
             var id = f[j].id;
             if (is_push_floor(main_floors, id)==false) continue;
