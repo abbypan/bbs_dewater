@@ -77,8 +77,10 @@ function get_page_floors(u) {
             $resp.find(fp).each(function() {
                 var bot = $(this);
                 var f_i = extract_floor_info(bot);
-                f_i.word_num = calc_word_num(f_i.content);
-                if(f_i) floors_info.push(f_i);
+                if(f_i){
+                    f_i.word_num = calc_word_num(f_i.content);
+                    floors_info.push(f_i);
+                }
             });
 
         }
@@ -94,6 +96,7 @@ function get_topic_url() {
 
 function set_topic(dst) {
     var tp = get_topic_name() ;
+    //alert(tp);
     var c = '<a href="' + get_topic_url() + '">' + tp + '</a>';
     $(dst).html(c);
     return tp;
@@ -196,7 +199,7 @@ function add_floor_content(dst, f) {
 
 function set_dewater_head(tp) {
     $('head').html(
-        '<meta content="text/html; charset=utf-8" http-equiv="Content-Type">' +
+        '<meta content="text/html; charset="' + page_charset() +'" http-equiv="Content-Type">' +
         '<title>' + tp + '</title>' +
         '<style>\
 body { font-size: medium; font-family: Verdana; Arial, Helvetica, sans-serif, margin: 1em 8em 1em 8em; text-indent: 2em; line-height: 135% }\n\
@@ -217,6 +220,7 @@ function get_topic_poster(main_floors){
 
 function dewater_thread() {
     var option = get_dewater_option();
+
     var main_floors = get_thread_floors(option);
     option.poster = get_topic_poster(main_floors);
 
