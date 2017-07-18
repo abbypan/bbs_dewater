@@ -152,7 +152,7 @@ function get_thread_floors(option) {
         var f = get_page_floors(u);
         var flen = f.length;
         for (var j = 0; j < flen; j++) {
-            if( f[j].id===undefined ) f[j].id = now_id;
+            if( f[j].id==undefined ) f[j].id = now_id;
 
             var id = f[j].id;
             if (is_push_floor(main_floors, id)==false) continue;
@@ -182,19 +182,17 @@ function is_skip_floor(f, opt) {
     return;
 }
 
-function add_floor_toc(dst, f) {
+function gen_floor_toc(f) {
     var html = '<p>' + f.id + '# <a href="#floor' + f.id + '">' + f.time + ' ' + f.poster + '</a></p>';
-    $floor = $(html);
-    $(dst).append($floor);
+    return html;
 }
 
-function add_floor_content(dst, f) {
+function gen_floor_content(f) {
     var html = '<div class="floor" id="floor' + f.id + '">' + 
         '<div class="chapter">№' + f.id + '<span class="star">☆☆☆</span>' + f.poster + '<span class="star">☆☆☆</span>' + f.time + '<span class="star">☆☆☆</span></div>' + 
         '<div class="flcontent">' + f.content + '</div>' + 
         '</div>';
-    $floor = $(html);
-    $(dst).append($floor);
+    return html;
 }
 
 function set_dewater_head(tp) {
@@ -227,16 +225,19 @@ function dewater_thread() {
     var topic=set_topic('#dewater_title');
     set_dewater_head(topic);
 
-    $('#dewater_toc').html('');
-    $('#dewater_floors').html('');
+    var final_toc = '';
+    var final_content = '';
 
     for (var i in main_floors) {
         var f = main_floors[i];
         if (is_skip_floor(f, option)) continue;
 
-        if (option.with_toc) add_floor_toc('#dewater_toc', f);
-        add_floor_content('#dewater_floors', f);
+        if (option.with_toc) final_toc += gen_floor_toc(f);
+        final_content += gen_floor_content(f);
     }
+
+    $('#dewater_toc').html(final_toc);
+    $('#dewater_floors').html(final_content);
 
     $('body').html($('#dewater_div').html());
 }
