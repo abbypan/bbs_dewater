@@ -18,27 +18,28 @@ function calc_word_num(w){
 function add_dewater_banner() {
     var xp = banner_path();
     $dewater_div = $('\
-                     <div id="dewater_div_form" style="align:center;background: #cad6e1;">\
-                     前<input id="max_page_num" name="max_page_num" size="3"/>页,\
-                     前<input id="max_floor_num" name="max_floor_num" size="4"/>楼, \
-                     每楼最少<input id="min_word_num" name="min_word_num" size="4"/>字,\
-                     抽取<input size="10" type="text" name="floor_keyword_grep" id="floor_keyword_grep">,  \
-                     过滤 <input size="10" type="text" name="floor_keyword_filter" id="floor_keyword_filter">,  \
-                     <input type="checkbox" id="only_poster" name="only_poster">只看楼主,\
-                     <input type="checkbox" id="only_img" name="only_img">只看图,\
-                     <input type="checkbox" id="with_toc" name="with_toc" checked />生成目录, \
-                     <input type="submit" value="脱水" onclick="dewater_thread()" />\
-                     </div>');
-                     $(xp).before($dewater_div);
+        <div id="dewater_div_form" style="align:center;background: #cad6e1;">\
+        前<input id="max_page_num" name="max_page_num" size="3"/>页,\
+        前<input id="max_floor_num" name="max_floor_num" size="4"/>楼, \
+        每楼最少<input id="min_word_num" name="min_word_num" size="4"/>字,\
+        抽取<input size="10" type="text" name="floor_keyword_grep" id="floor_keyword_grep">,  \
+        过滤 <input size="10" type="text" name="floor_keyword_filter" id="floor_keyword_filter">,  \
+        <input type="checkbox" id="only_poster" name="only_poster">只看楼主,\
+        <input type="checkbox" id="only_img" name="only_img">只看图,\
+        <input type="checkbox" id="with_toc" name="with_toc" checked />生成目录, \
+        <input type="checkbox" id="export_txt" name="export_txt" /> 导出txt, \
+        <input type="submit" value="脱水" onclick="dewater_thread()" />\
+        </div>');
+        $(xp).before($dewater_div);
 
-                     $main_floors = $('\
-                                      <div id="dewater_div">\
-                                      <div id="dewater_title"></div>\
-                                      <div id="dewater_toc"></div>\
-                                      <div id="dewater_floors"></div></div>');
-                                      $(xp).before($main_floors);
+        $main_floors = $('\
+            <div id="dewater_div">\
+            <div id="dewater_title"></div>\
+            <div id="dewater_toc"></div>\
+            <div id="dewater_floors"></div></div>');
+            $(xp).before($main_floors);
 
-}
+        }
 
 
 
@@ -51,6 +52,7 @@ function get_dewater_option() {
         floor_keyword_grep : $("#floor_keyword_grep")[0].value + '', 
         floor_keyword_filter : $("#floor_keyword_filter")[0].value + '', 
         with_toc: $("#with_toc")[0].checked,
+        export_txt: $("#export_txt")[0].checked,
         min_word_num: parseInt($("#min_word_num")[0].value)
     };
 
@@ -94,8 +96,8 @@ function get_topic_url() {
     return window.location.href;
 }
 
-function set_topic(dst) {
-    var tp = get_topic_name() ;
+function set_topic(tp, dst) {
+    //var tp = get_topic_name() ;
     //alert(tp);
     var c = '<a href="' + get_topic_url() + '">' + tp + '</a>';
     $(dst).html(c);
@@ -182,17 +184,20 @@ function is_skip_floor(f, opt) {
     return;
 }
 
-function gen_floor_toc(f) {
-    var html = '<p>' + f.id + '# <a href="#floor' + f.id + '">' + f.time + ' ' + f.poster + '</a></p>';
-    return html;
+function gen_floor_html(f) {
+    f.toc = '<p>' + f.id + '# <a href="#floor' + f.id + '">' + f.time + ' ' + f.poster + '</a></p>';
+    f.floor = '<div class="floor" id="floor' + f.id + '">' +
+        '<div class="chapter">â' + f.id + '<span class="star">âââ</span>' + f.poster + '<span class="star">âââ</span>' + f.time + '<span class="star">âââ</span></div>' +
+        '<div class="flcontent">' + f.content + '</div>' +
+        '</div>';
+    return f;
 }
 
-function gen_floor_content(f) {
-    var html = '<div class="floor" id="floor' + f.id + '">' + 
-        '<div class="chapter">№' + f.id + '<span class="star">☆☆☆</span>' + f.poster + '<span class="star">☆☆☆</span>' + f.time + '<span class="star">☆☆☆</span></div>' + 
-        '<div class="flcontent">' + f.content + '</div>' + 
-        '</div>';
-    return html;
+
+function gen_floor_txt(f) {
+    f.toc = f.id + '# ' + f.time + ' ' + f.poster + "\n";
+    f.floor = "\n" + f.id + '#' + f.time + ' ' + f.poster + "\n\n" + f.content.replace(/<[^>]+>/g, "\n").replace(/\n\n\n+/,"\n\n");
+    return f;
 }
 
 function set_dewater_head(tp) {
@@ -200,14 +205,14 @@ function set_dewater_head(tp) {
         '<meta content="text/html; charset="' + page_charset() +'" http-equiv="Content-Type">' +
         '<title>' + tp + '</title>' +
         '<style>\
-body { font-size: medium; font-family: Verdana; Arial, Helvetica, sans-serif, margin: 1em 8em 1em 8em; text-indent: 2em; line-height: 150%; margin-left : 10%; margin-right: 10% }\n\
-.chapter,#dewater_title,#dewater_toc { margin: 0.8em 0.2em 1.4em 0.2em; text-indent: 0em; padding-bottom: 0.25em }\n\
-.chapter { border-top: 0.2em solid #ee9b73;}\n\
-#dewater_title { border-bottom: 0.2em solid #ee9b73; }\n\
-#dewater_toc { line-height: 115% }\n\
-#dewater_title { text-align: center; font-size: x-large}\n\
-.star { color: #99cc00; }\n\
-</style>'
+        body { font-size: medium; font-family: Verdana; Arial, Helvetica, sans-serif, margin: 1em 8em 1em 8em; text-indent: 2em; line-height: 150%; margin-left : 10%; margin-right: 10% }\n\
+        .chapter,#dewater_title,#dewater_toc { margin: 0.8em 0.2em 1.4em 0.2em; text-indent: 0em; padding-bottom: 0.25em }\n\
+        .chapter { border-top: 0.2em solid #ee9b73;}\n\
+        #dewater_title { border-bottom: 0.2em solid #ee9b73; }\n\
+        #dewater_toc { line-height: 115% }\n\
+        #dewater_title { text-align: center; font-size: x-large}\n\
+        .star { color: #99cc00; }\n\
+        </style>'
     );
 }
 
@@ -215,6 +220,20 @@ function get_topic_poster(main_floors){
     return main_floors[0].poster;
 }
 
+function download(filename, text) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}
 
 function dewater_thread() {
     var option = get_dewater_option();
@@ -222,8 +241,7 @@ function dewater_thread() {
     var main_floors = get_thread_floors(option);
     option.poster = get_topic_poster(main_floors);
 
-    var topic=set_topic('#dewater_title');
-    set_dewater_head(topic);
+    var topic = get_topic_name() ;
 
     var final_toc = '';
     var final_content = '';
@@ -232,12 +250,23 @@ function dewater_thread() {
         var f = main_floors[i];
         if (is_skip_floor(f, option)) continue;
 
-        if (option.with_toc) final_toc += gen_floor_toc(f);
-        final_content += gen_floor_content(f);
+        if(option.export_txt){
+            gen_floor_txt(f);
+        }else{
+            gen_floor_html(f);
+        }
+
+        if (option.with_toc) final_toc += f.toc;
+        final_content += f.floor;
     }
 
-    $('#dewater_toc').html(final_toc);
-    $('#dewater_floors').html(final_content);
-
-    $('body').html($('#dewater_div').html());
+    if(option.export_txt){
+        download(topic+'.txt', topic + "\n\n\n" + final_toc + "\n" + final_content);
+    }else{
+        set_topic(topic, '#dewater_title');
+        set_dewater_head(topic);
+        $('#dewater_toc').html(final_toc);
+        $('#dewater_floors').html(final_content);
+        $('body').html($('#dewater_div').html());
+    }
 }
