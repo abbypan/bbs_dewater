@@ -26,8 +26,8 @@ function add_dewater_banner() {
         过滤 <input size="8" type="text" name="floor_keyword_filter" id="floor_keyword_filter">,  \
         <input type="checkbox" id="only_poster" name="only_poster">只看楼主,\
         <input type="checkbox" id="only_img" name="only_img">只看图,\
-        <input type="checkbox" id="with_toc" name="with_toc" checked />生成目录, \
-        <input type="checkbox" id="export_txt" name="export_txt" /> 导出txt, \
+        <input type="checkbox" id="with_toc" name="with_toc" checked />目录, \
+        <input type="checkbox" id="export_txt" name="export_txt" /> txt, \
         <input type="submit" value="脱水" onclick="dewater_thread()" />\
         </div>');
         $(xp).before($dewater_div);
