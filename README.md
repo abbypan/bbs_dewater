@@ -1,22 +1,12 @@
 bbs_dewater
 ===========
 
-bbs dewater, base function 贴子脱水 ，基础函数如下：
+bbs dewater, base function 贴子脱水 ，支持导出 txt/html
 
-![bbs_dewater.png](bbs_dewater.png)
+功能选项：
 
-前n页
+![sample.png](sample.png)
 
-前n楼
+不勾选导出txt，则在线html示例：
 
-每楼最少x字
-
-抽取含xx的楼层
-
-过滤含xx的楼层
-
-只看楼主
-
-只看图
-
-生成目录
+![sample_html.png](sample_html.png)
