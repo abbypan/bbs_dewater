@@ -22,8 +22,8 @@ function add_dewater_banner() {
         前<input id="max_page_num" name="max_page_num" size="3"/>页,\
         前<input id="max_floor_num" name="max_floor_num" size="4"/>楼, \
         每楼最少<input id="min_word_num" name="min_word_num" size="4"/>字,\
-        抽取<input size="10" type="text" name="floor_keyword_grep" id="floor_keyword_grep">,  \
-        过滤 <input size="10" type="text" name="floor_keyword_filter" id="floor_keyword_filter">,  \
+        抽取<input size="8" type="text" name="floor_keyword_grep" id="floor_keyword_grep">,  \
+        过滤 <input size="8" type="text" name="floor_keyword_filter" id="floor_keyword_filter">,  \
         <input type="checkbox" id="only_poster" name="only_poster">只看楼主,\
         <input type="checkbox" id="only_img" name="only_img">只看图,\
         <input type="checkbox" id="with_toc" name="with_toc" checked />生成目录, \
