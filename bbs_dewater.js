@@ -187,7 +187,7 @@ function is_skip_floor(f, opt) {
 function gen_floor_html(f) {
     f.toc = '<p>' + f.id + '# <a href="#floor' + f.id + '">' + f.time + ' ' + f.poster + '</a></p>';
     f.floor = '<div class="floor" id="floor' + f.id + '">' +
-        '<div class="chapter">â' + f.id + '<span class="star">âââ</span>' + f.poster + '<span class="star">âââ</span>' + f.time + '<span class="star">âââ</span></div>' +
+        '<div class="chapter">№' + f.id + '<span class="star">☆☆☆</span>' + f.poster + '<span class="star">☆☆☆</span>' + f.time + '<span class="star">☆☆☆</span></div>' +  
         '<div class="flcontent">' + f.content + '</div>' +
         '</div>';
     return f;
