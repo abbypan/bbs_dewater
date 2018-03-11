@@ -56,7 +56,7 @@ function get_dewater_option() {
         floor_keyword_grep : $("#floor_keyword_grep")[0].value + '', 
         floor_keyword_filter : $("#floor_keyword_filter")[0].value + '', 
         with_toc: $("#with_toc")[0].checked,
-        dst : $("#dst")[0].value + '',
+        dst : $("#dst").val() + '',
         min_word_num: parseInt($("#min_word_num")[0].value)
     };
 
