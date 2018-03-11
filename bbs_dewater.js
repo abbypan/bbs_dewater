@@ -27,8 +27,12 @@ function add_dewater_banner() {
         <input type="checkbox" id="only_poster" name="only_poster">只看楼主,\
         <input type="checkbox" id="only_img" name="only_img">只看图,\
         <input type="checkbox" id="with_toc" name="with_toc" checked />目录, \
-        <input type="checkbox" id="export_txt" name="export_txt" /> txt, \
-        <input type="submit" value="脱水" onclick="dewater_thread()" />\
+        <select name="dst"> \
+        <option value="online" selected="selected">online</option> \
+        <option value="txt">txt</option> \
+        <option value="html">html</option> \
+        </select>, \
+        <input type="submit" value="脱水" onclick="dewater_thread()" /> \
         </div>');
         $(xp).before($dewater_div);
 
@@ -52,7 +56,7 @@ function get_dewater_option() {
         floor_keyword_grep : $("#floor_keyword_grep")[0].value + '', 
         floor_keyword_filter : $("#floor_keyword_filter")[0].value + '', 
         with_toc: $("#with_toc")[0].checked,
-        export_txt: $("#export_txt")[0].checked,
+        dst: $("#dst")[0].value,
         min_word_num: parseInt($("#min_word_num")[0].value)
     };
 
@@ -97,8 +101,6 @@ function get_topic_url() {
 }
 
 function set_topic(tp, dst) {
-    //var tp = get_topic_name() ;
-    //alert(tp);
     var c = '<a href="' + get_topic_url() + '">' + tp + '</a>';
     $(dst).html(c);
     return tp;
@@ -250,7 +252,7 @@ function dewater_thread() {
         var f = main_floors[i];
         if (is_skip_floor(f, option)) continue;
 
-        if(option.export_txt){
+        if(option.dst=='txt'){
             gen_floor_txt(f);
         }else{
             gen_floor_html(f);
@@ -260,8 +262,8 @@ function dewater_thread() {
         final_content += f.floor;
     }
 
-    if(option.export_txt){
-        download(topic+'.txt', topic + "\n\n\n" + final_toc + "\n" + final_content);
+    if(option.dst!='online'){
+        download(topic+'.'+option.dst, topic + "\n\n\n" + final_toc + "\n" + final_content);
     }else{
         set_topic(topic, '#dewater_title');
         set_dewater_head(topic);
