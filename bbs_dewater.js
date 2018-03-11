@@ -271,7 +271,7 @@ function dewater_thread() {
         $('#dewater_floors').html(final_content);
         $('body').html($('#dewater_div').html());
         if(option.dst=='html'){
-            download(topic+'.html', $('html').html());
+            download(topic+'.html', $('html')[0].outerHTML);
         }
     }
 }
