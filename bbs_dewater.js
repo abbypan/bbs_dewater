@@ -27,7 +27,7 @@ function add_dewater_banner() {
         <input type="checkbox" id="only_poster" name="only_poster">只看楼主,\
         <input type="checkbox" id="only_img" name="only_img">只看图,\
         <input type="checkbox" id="with_toc" name="with_toc" checked />目录, \
-        <select name="dst"> \
+        <select id="dst" name="dst"> \
         <option value="online" selected="selected">online</option> \
         <option value="txt">txt</option> \
         <option value="html">html</option> \
