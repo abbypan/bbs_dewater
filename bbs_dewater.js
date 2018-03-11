@@ -28,7 +28,7 @@ function add_dewater_banner() {
         <input type="checkbox" id="only_img" name="only_img">只看图,\
         <input type="checkbox" id="with_toc" name="with_toc" checked />目录, \
         <select id="dst" name="dst"> \
-        <option value="online" selected="selected">online</option> \
+        <option value="web" selected="selected">web</option> \
         <option value="txt">txt</option> \
         <option value="html">html</option> \
         </select>, \
@@ -56,7 +56,7 @@ function get_dewater_option() {
         floor_keyword_grep : $("#floor_keyword_grep")[0].value + '', 
         floor_keyword_filter : $("#floor_keyword_filter")[0].value + '', 
         with_toc: $("#with_toc")[0].checked,
-        dst : $("#dst").val() + '',
+        dst : $("#dst")[0].val() + '',
         min_word_num: parseInt($("#min_word_num")[0].value)
     };
 
