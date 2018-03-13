@@ -150,20 +150,20 @@ function is_floor_overflow(id, option) {
 function get_thread_floors(option) {
     var main_floors = new Array();
     var select_urls = select_page_urls(option);
-    var now_id = 1;
+
+    var now_id = 0;
     for (var i in select_urls) {
         var u = select_urls[i];
         var f = get_page_floors(u);
         var flen = f.length;
         for (var j = 0; j < flen; j++) {
+            now_id++;
             if( f[j].id==undefined ) f[j].id = now_id;
 
-            var id = f[j].id;
-            if (is_push_floor(main_floors, id)==false) continue;
-            if (is_floor_overflow(id, option)) return main_floors;
+            if (is_push_floor(main_floors, f[j].id)==false) continue;
+            if (is_floor_overflow(f[j].id, option)) return main_floors;
 
             main_floors.push(f[j]);
-            now_id++;
         }
     }
     return main_floors;
