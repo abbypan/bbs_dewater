@@ -20,7 +20,7 @@ function add_dewater_banner() {
     $dewater_div = $('\
         <div id="dewater_div_form" style="align:center;background: #cad6e1;">\
         第<input id="min_page_num" name="min_page_num" size="3"/>-<input id="max_page_num" name="max_page_num" size="3"/>页,\
-        前<input id="max_floor_num" name="max_floor_num" size="4"/>楼, \
+        第<input id="min_floor_num" name="min_floor_num" size="4"/>-<input id="max_floor_num" name="max_floor_num" size="4"/>楼, \
         每楼最少<input id="min_word_num" name="min_word_num" size="4"/>字,\
         抽取<input size="8" type="text" name="floor_keyword_grep" id="floor_keyword_grep">,  \
         过滤 <input size="8" type="text" name="floor_keyword_filter" id="floor_keyword_filter">,  \
@@ -51,6 +51,7 @@ function get_dewater_option() {
     return {
         min_page_num: parseInt($("#min_page_num")[0].value),
         max_page_num: parseInt($("#max_page_num")[0].value),
+        min_floor_num: parseInt($("#min_floor_num")[0].value),
         max_floor_num: parseInt($("#max_floor_num")[0].value),
         only_poster: $("#only_poster")[0].checked,
         only_img: $("#only_img")[0].checked,
@@ -149,6 +150,12 @@ function is_floor_overflow(id, option) {
     return 1;
 }
 
+function is_floor_skip(id, option){
+    if (!option.min_floor_num) return 0;
+    if (id >= option.min_floor_num) return 0;
+    return 1;
+}
+
 function get_thread_floors(option) {
     var main_floors = new Array();
     var select_urls = select_page_urls(option);
@@ -163,6 +170,7 @@ function get_thread_floors(option) {
             if( f[j].id==undefined ) f[j].id = now_id;
 
             if (is_push_floor(main_floors, f[j].id)==false) continue;
+            if (is_floor_skip(f[j].id, option)) continue;
             if (is_floor_overflow(f[j].id, option)) return main_floors;
 
             main_floors.push(f[j]);
