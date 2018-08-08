@@ -19,7 +19,7 @@ function add_dewater_banner() {
     var xp = banner_path();
     $dewater_div = $('\
         <div id="dewater_div_form" style="align:center;background: #cad6e1;">\
-        前<input id="max_page_num" name="max_page_num" size="3"/>页,\
+        第<input id="min_page_num" name="min_page_num" size="3"/>-<input id="max_page_num" name="max_page_num" size="3"/>页,\
         前<input id="max_floor_num" name="max_floor_num" size="4"/>楼, \
         每楼最少<input id="min_word_num" name="min_word_num" size="4"/>字,\
         抽取<input size="8" type="text" name="floor_keyword_grep" id="floor_keyword_grep">,  \
@@ -49,6 +49,7 @@ function add_dewater_banner() {
 
 function get_dewater_option() {
     return {
+        min_page_num: parseInt($("#min_page_num")[0].value),
         max_page_num: parseInt($("#max_page_num")[0].value),
         max_floor_num: parseInt($("#max_floor_num")[0].value),
         only_poster: $("#only_poster")[0].checked,
@@ -128,12 +129,13 @@ function get_page_urls() {
 function select_page_urls(option) {
     var page_urls = get_page_urls();
 
-    if (!option.max_page_num) return page_urls;
+    if (!option.max_page_num && !option.min_page_num) return page_urls;
 
     var urls = new Array();
     var n = 1;
     for (var i in page_urls) {
-        if (n > option.max_page_num) break;
+        if (option.min_page_num && i < option.min_page_num) continue;
+        if (option.max_page_num && i > option.max_page_num) break;
         var u = page_urls[i];
         urls.push(u);
         ++n;
