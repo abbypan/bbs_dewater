@@ -135,7 +135,7 @@ function select_page_urls(option) {
     var urls = new Array();
     var n = 1;
     for (var i in page_urls) {
-        var j = i+1;
+        var j = parseInt(i)+1;
         if (option.min_page_num && j < option.min_page_num) continue;
         if (option.max_page_num && j > option.max_page_num) break;
         var u = page_urls[i];
