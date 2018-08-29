@@ -24,7 +24,8 @@ function add_dewater_banner() {
         每楼最少<input id="min_word_num" name="min_word_num" size="4"/>字,\
         抽取<input size="8" type="text" name="floor_keyword_grep" id="floor_keyword_grep">,  \
         过滤 <input size="8" type="text" name="floor_keyword_filter" id="floor_keyword_filter">,  \
-        <input type="checkbox" id="only_poster" name="only_poster">只看楼主,\
+        <input type="checkbox" id="only_poster" name="only_poster">只看楼主, \
+        只看层主<input size="8" type="text" name="poster_keyword_grep" id="poster_keyword_grep">,\
         <input type="checkbox" id="only_img" name="only_img">只看图,\
         <input type="checkbox" id="with_toc" name="with_toc" checked />目录, \
         <select id="dst" name="dst"> \
@@ -54,6 +55,7 @@ function get_dewater_option() {
         min_floor_num: parseInt($("#min_floor_num")[0].value),
         max_floor_num: parseInt($("#max_floor_num")[0].value),
         only_poster: $("#only_poster")[0].checked,
+        poster_keyword_grep: $("#poster_keyword_grep")[0].value + '', 
         only_img: $("#only_img")[0].checked,
         floor_keyword_grep: $("#floor_keyword_grep")[0].value + '', 
         floor_keyword_filter: $("#floor_keyword_filter")[0].value + '', 
@@ -190,6 +192,7 @@ function is_push_floor(floors_info, id){
 
 function is_skip_floor(f, opt) {
     if (opt.only_poster && (f.poster != opt.poster)) return 1;
+    if (opt.poster_keyword_grep.match(/\S/) && ! f.poster.match(opt.poster_keyword_grep)) return 1;
     if (opt.only_img && ! f.content.match(/\<img\s+/i)) return 1;
     if (opt.min_word_num && (f.word_num < opt.min_word_num)) return 1;
     if (opt.floor_keyword_grep.match(/\S/) && ! f.content.match(opt.floor_keyword_grep)) return 1;
