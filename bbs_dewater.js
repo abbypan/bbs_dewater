@@ -21,11 +21,7 @@ function add_dewater_banner() {
         <div id="dewater_div_form" style="align:center;background: #cad6e1;">\
         第<input id="min_page_num" name="min_page_num" size="3"/>-<input id="max_page_num" name="max_page_num" size="3"/>页,\
         第<input id="min_floor_num" name="min_floor_num" size="4"/>-<input id="max_floor_num" name="max_floor_num" size="4"/>楼, \
-        每楼最少<input id="min_word_num" name="min_word_num" size="4"/>字,\
-        抽取<input size="8" type="text" name="floor_keyword_grep" id="floor_keyword_grep">,  \
-        过滤 <input size="8" type="text" name="floor_keyword_filter" id="floor_keyword_filter">,  \
         <input type="checkbox" id="only_poster" name="only_poster">只看楼主, \
-        只看层主<input size="8" type="text" name="poster_keyword_grep" id="poster_keyword_grep">,\
         <input type="checkbox" id="only_img" name="only_img">只看图,\
         <input type="checkbox" id="with_toc" name="with_toc" checked />目录, \
         <select id="dst" name="dst"> \
@@ -33,6 +29,10 @@ function add_dewater_banner() {
         <option value="txt">txt</option> \
         <option value="html">html</option> \
         </select>, \
+        楼层最少<input id="min_word_num" name="min_word_num" size="4"/>字,\
+        抽取<input size="8" type="text" name="floor_keyword_grep" id="floor_keyword_grep">,  \
+        过滤 <input size="8" type="text" name="floor_keyword_filter" id="floor_keyword_filter">,  \
+        只看层主<input size="8" type="text" name="poster_keyword_grep" id="poster_keyword_grep">,\
         <input type="submit" value="脱水" onclick="dewater_thread()" /> \
         </div>');
         $(xp).before($dewater_div);
