@@ -171,6 +171,7 @@ function get_thread_floors(option) {
         for (var j = 0; j < flen; j++) {
             now_id++;
             if( f[j].id==undefined ) f[j].id = now_id;
+            if( f[j].id=='' ) f[j].id = now_id;
 
             if (is_push_floor(main_floors, f[j].id)==false) continue;
             if (is_floor_skip(f[j].id, option)) continue;
