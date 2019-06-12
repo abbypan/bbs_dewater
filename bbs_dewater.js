@@ -124,7 +124,9 @@ function get_page_urls() {
     var url_list = new Array();
     for (var i = 1; i <= num; i++) {
         var n_url = format_thread_url_ith(url, i);
+        if(n_url){
         url_list.push(n_url);
+        }
     }
     return url_list;
 }
