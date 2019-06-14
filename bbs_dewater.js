@@ -234,7 +234,10 @@ function set_dewater_head(tp) {
 }
 
 function get_topic_poster(main_floors){
-    return main_floors[0].poster;
+    if(main_floors[0]){
+        return main_floors[0].poster;
+    }
+    return;
 }
 
 function download(filename, text) {
