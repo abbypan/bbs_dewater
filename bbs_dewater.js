@@ -42,7 +42,9 @@ function add_dewater_banner() {
         <div id="dewater_toc"></div>\
         <div id="dewater_floors"></div></div>');
 
-        x.before($dewater_div);
+        if(! $('body').find('div[id="dewater_div_form"]') ) {
+            x.before($dewater_div);
+        }
 
 }
 
