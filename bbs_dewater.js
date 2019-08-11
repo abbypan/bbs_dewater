@@ -17,6 +17,8 @@ function calc_word_num(w){
 
 function add_dewater_banner() {
     var xp = banner_path();
+    var x = $('body').find(xp).first();
+
     $dewater_div = $('\
         <div id="dewater_div_form" style="align:center;background: #cad6e1;">\
         第<input id="min_page_num" name="min_page_num" size="3"/>-<input id="max_page_num" name="max_page_num" size="3"/>页,\
@@ -34,19 +36,15 @@ function add_dewater_banner() {
         <option value="html">html</option> \
         </select>, \
         <input type="submit" value="脱水" onclick="dewater_thread()" /> \
-        </div>');
+        </div> \
+        <div id="dewater_div">\
+        <div id="dewater_title"></div>\
+        <div id="dewater_toc"></div>\
+        <div id="dewater_floors"></div></div>');
 
-        $(xp).first().before($dewater_div);
+        x.before($dewater_div);
 
-        $main_floors = $('\
-            <div id="dewater_div">\
-            <div id="dewater_title"></div>\
-            <div id="dewater_toc"></div>\
-            <div id="dewater_floors"></div></div>');
-
-        $(xp).first().before($main_floors);
-
-        }
+}
 
 
 
