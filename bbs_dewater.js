@@ -35,14 +35,16 @@ function add_dewater_banner() {
         </select>, \
         <input type="submit" value="脱水" onclick="dewater_thread()" /> \
         </div>');
-        $(xp).before($dewater_div);
+
+        $(xp).first().before($dewater_div);
 
         $main_floors = $('\
             <div id="dewater_div">\
             <div id="dewater_title"></div>\
             <div id="dewater_toc"></div>\
             <div id="dewater_floors"></div></div>');
-            $(xp).before($main_floors);
+
+        $(xp).first().before($main_floors);
 
         }
 
